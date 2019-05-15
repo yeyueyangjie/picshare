@@ -1,0 +1,8 @@
+<!--pages/login/login.wxml-->
+<view class='wxlogin'>
+  <image src='/images/test.jpg'></image>
+  <view class='wx-title'>请确认授权以下信息</view>
+  <view class='wx-info'>获得你的公开信息（昵称、头像等）</view>
+  <view class='wx-info'>不授权将无法微信登录</view>
+<button class='wx-btn' lang="zh_CN" open-type="getUserInfo" bindgetuserinfo="getUserInfo">确认登录</button>
+</view>

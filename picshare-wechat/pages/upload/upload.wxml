@@ -1,0 +1,21 @@
+<view class='image'>
+
+  <!-- 图片上传 -->
+  <view>
+    <form bindsubmit='formSubmitPhoto'>
+      <textarea class='title' maxlength='15' bindblur='post_desc' name='title' placeholder='请输入你的标题（不多于15字）'></textarea>
+      <textarea class='textarea' maxlength='40' bindblur='post_desc' name='summary' placeholder='分享你的信息，交流你的心得，输入文字不多于40字'></textarea>
+      <view class='upload-view'>
+        <view class="uv-box">
+          <view wx:if="{{tempFile}}">
+            <image class="uv-box" src='{{tempFile}}' mode='scaleToFill' bindtap='chooseImg'></image>
+          </view>
+          <view wx:else bindtap='chooseImg'>
+            <text>+</text>拍照
+          </view>
+        </view>
+      </view>
+      <button class='post-btn' formType="submit">发表</button>
+    </form>
+  </view>
+</view>

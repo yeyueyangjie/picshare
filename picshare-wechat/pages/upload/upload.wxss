@@ -1,0 +1,62 @@
+/* pages/postVideo/postVideo.wxss */
+.image{
+  overflow: hidden;
+  padding:  25rpx 30rpx 100rpx;
+  height: 100vh
+}
+
+.title{
+  display: block;
+  width: 100%;
+  height: 100rpx;
+  color: #818181;
+  font-size: 40rpx;
+  margin-bottom: 10rpx;
+  border-bottom: 2rpx solid #F5F5F5;
+}
+.textarea{
+  display: block;
+  width: 100%;
+  height: 250rpx;
+  color: #818181;
+  font-size: 28rpx;
+  margin-bottom: 20rpx;
+}
+
+.upload-view{
+  overflow: hidden;
+}
+.uv-box{
+  display: block;
+  float: left;
+  width: 500rpx;
+  height: 500rpx;
+  line-height: 500rpx;
+  text-align: center;
+  color: #8c8c8c;
+  font-size: 40rpx;
+  border: 1rpx solid #CFCFCF;
+  box-sizing: border-box;
+  background-color: #CFCFCF;
+}
+
+.uv-box text{
+  color: #757575;
+  font-size: 66rpx;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 3rpx 12rpx 0;
+}
+
+
+
+.post-btn{
+  margin-top: 30rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  color: #fff;
+  font-size: 34rpx;
+  background: #e1291d;
+}
+
+

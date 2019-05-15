@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yeyue.pictureshare.dao.PicShareDao">
+    <resultMap id="picShareMap" type="com.yeyue.pictureshare.model.PicShareEntity"></resultMap>
+    <resultMap id="collectionMap" type="com.yeyue.pictureshare.model.CollectionEntity"></resultMap>
+    <select id="getPicShareListByAuthor" resultMap="picShareMap">
+        <![CDATA[select * from picshareinfo]]>
+        <where>
+            del = 1 and status = 1 and author = #{userId}
+        </where>
+    </select>
+    <select id="getPicShareList" resultMap="picShareMap">
+        <![CDATA[select p.*,u.portrait as authorportrait from picshareinfo p left join userinfo u on p.author = u.userId]]>
+        <where>
+            p.del = 1 and p.status = 1 and u.del = 1 and u.status = 1
+        </where>
+    </select>
+    <select id="getCollectCount" resultType="Integer">
+        <![CDATA[select count(*) from picshareinfo p inner join collectioninfo c on c.picShare = p.picShareId]]>
+        <where>
+            p.del = 1 and p.status = 1 and p.picShareId = #{picShareId} and c.del = 1
+        </where>
+    </select>
+    <select id="getCollectedCount" resultMap="collectionMap">
+        <![CDATA[select c.* from picshareinfo p inner join collectioninfo c on c.picShare = p.picShareId]]>
+        <where>
+            p.del = 1 and p.status = 1 and c.collected = #{userId} and p.picShareId =#{picShareId}
+        </where>
+    </select>
+    <select id="getCollectedList" resultMap="picShareMap">
+        <![CDATA[select p.* from picshareinfo p inner join collectioninfo c on c.picShare = p.picShareId]]>
+        <where>
+            p.del = 1 and p.status = 1 and c.collected = #{userId} and c.del = 1
+        </where>
+    </select>
+    <select id="getPicShare" resultMap="picShareMap">
+        <![CDATA[select * from picshareinfo]]>
+        <where>
+            del = 1 and status = 1 and picShareId = #{picShareId}
+        </where>
+    </select>
+    <insert id="addPicShare">
+        insert into picshareinfo(picShareId,target,title,summary,author,created,address,status,del) values (#{pic.picShareId},#{pic.target},#{pic.title},#{pic.summary},#{pic.author},now(),#{pic.address},1,1)
+    </insert>
+    <update id="updatePicShare">
+        update picshareinfo set target = #{pic.target},title = #{pic.title},summary = #{pic.summary},address = #{pic.address}
+        <where>
+            picShareId = #{pic.picShareId}
+        </where>
+    </update>
+    <update id="deletePicShare">
+        update picshareinfo set del = 2
+        <where>
+            picShareId = #{picShareId}
+        </where>
+    </update>
+</mapper>

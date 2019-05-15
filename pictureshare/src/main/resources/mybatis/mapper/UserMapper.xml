@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yeyue.pictureshare.dao.UserDao">
+    <resultMap id="userMap" type="com.yeyue.pictureshare.model.UserEntity"></resultMap>
+    <select id="getUserList" resultMap="userMap">
+        <![CDATA[select * from userinfo]]>
+        <where>
+            del = 1 and status = 1
+        </where>
+    </select>
+    <select id="getUser" resultMap="userMap">
+        <![CDATA[select * from userinfo]]>
+        <where>
+          del = 1 and status = 1 and userId = #{userId}
+        </where>
+    </select>
+    <insert id="addUser">
+        insert into userinfo(userId,userName,phoneNum,sex,birthday,portrait,summary,address,status,del) values (#{user.userId},#{user.userName},#{user.phoneNum},#{user.sex},#{user.birthday},#{user.portrait},#{user.summary},#{user.address},1,1)
+    </insert>
+    <update id="updateUser">
+        update userinfo set userName = #{user.userName},phoneNum = #{user.phoneNum},sex = #{user.sex},birthday = #{user.birthday},portrait = #{user.portrait},summary = #{user.summary},address = #{user.address}
+        <where>
+            userId = #{user.userId}
+        </where>
+    </update>
+    <update id="deleteUser">
+        update userinfo set del = 2
+        <where>
+            userId = #{userId}
+        </where>
+    </update>
+
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yeyue.pictureshare.dao.CommentDao">
+    <resultMap id="commentMap" type="com.yeyue.pictureshare.model.CommentEntity"></resultMap>
+    <select id="getCommentList" resultMap="commentMap">
+        <![CDATA[select * from commentinfo]]>
+        <where>
+            del = 1
+        </where>
+    </select>
+    <insert id="addComment">
+        insert into commentinfo (commentId,picShare,fatherComment,commented,summary,created,del) values (#{comment.commentId},#{comment.picShare},#{comment.fatherComment},#{comment.commented},#{comment.summary},now(),1);
+    </insert>
+    <update id="deleteComment">
+        update commentinfo set del = 2
+        <where>
+            commentId = #{commentId}
+        </where>
+    </update>
+</mapper>
