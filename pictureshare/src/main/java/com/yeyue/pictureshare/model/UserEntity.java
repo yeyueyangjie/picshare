@@ -41,6 +41,7 @@ public class UserEntity {
      * 删除标志 默认1 删除2
      */
     private String del;
+
     public String getUserId() {
         return userId;
     }

@@ -17,11 +17,12 @@ public class CommentController {
 
     /**
      * 获取列表
+     *
      * @return
      */
     @CrossOrigin
     @GetMapping("comment/list")
-    public ResultDto getCollectionList(){
+    public ResultDto getCollectionList() {
         ResultDto result = new ResultDto();
         try {
             PageDto page = new PageDto();
@@ -30,22 +31,23 @@ public class CommentController {
             page.setList(list);
             result.setCode(200);
             result.setData(page);
-        }catch (Exception e){
+        } catch (Exception e) {
             result.setCode(300);
             result.setMessage(e.toString());
-        }finally {
+        } finally {
             return result;
         }
     }
 
     /**
      * 添加收藏
+     *
      * @param comment
      * @return
      */
     @CrossOrigin
     @PostMapping("/comment/add")
-    public ResultDto addCollection(@RequestBody CommentEntity comment){
+    public ResultDto addCollection(@RequestBody CommentEntity comment) {
         ResultDto result = new ResultDto();
         try {
             PageDto page = new PageDto();
@@ -54,38 +56,39 @@ public class CommentController {
             page.setCount(commentService.addComment(comment));
             result.setCode(200);
             result.setData(page);
-        }catch (Exception e){
+        } catch (Exception e) {
             result.setCode(300);
             result.setMessage(e.toString());
-        }finally {
+        } finally {
             return result;
         }
     }
 
     /**
      * 删除收藏
+     *
      * @param commentId
      * @return
      */
     @CrossOrigin
     @GetMapping("/comment/delete")
-    public ResultDto deleteCollection(String commentId){
+    public ResultDto deleteCollection(String commentId) {
         ResultDto result = new ResultDto();
         try {
-            if(("").equals(commentId)){
+            if (("").equals(commentId)) {
                 result.setCode(301);
                 result.setMessage("commentId is Empty");
-            }else {
+            } else {
                 PageDto page = new PageDto();
                 page.setCount(commentService.deleteComment(commentId));
 
                 result.setCode(200);
                 result.setData(page);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             result.setCode(300);
             result.setMessage(e.toString());
-        }finally {
+        } finally {
             return result;
         }
 

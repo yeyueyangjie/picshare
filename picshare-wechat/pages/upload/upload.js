@@ -11,54 +11,37 @@ function initQiniu() {
   qiniuUploader.init(options)
 }
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
     tempFile: "",
     title: "",
     summary: "",
     imageurl: "",
     location:{}
-
   },
-
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function(options) {
     let that = this
     initQiniu()
-    // 获取当前位置信息
     let test = (obj) => {
       let flag = Object.keys(obj)
       return (flag.length === 0)
     }
-
     if (test(app.globalData.location)) {
-      console.log('进行当前位置获取')
       // 获取当前位置信息
       wx.chooseLocation({
         success: function (res) {
-          console.log(res)
           app.globalData.location = res
         }
       })
     } 
-    console.log(app.globalData)
   },
   // 七牛图片上传方法
   upload: function(filePath) {
     let that = this
     qiniuUploader.upload(filePath, (res) => {
-        console.log(res)
         that.setData({
           imageurl: res.fileUrl
         })
-      }, (error) => {
-        console.error('error: ' + JSON.stringify(error));
-      });
+      })
   },
   /**
    * 表单提交
@@ -66,9 +49,6 @@ Page({
   formSubmitPhoto: function(e) {
     var that = this;
     var info = e.detail.value;
-    console.log(info)
-    //console.log(that.data.imageurl)
-    // console.log(info);
     if (info.title.length == 0 || info.summary == 0 || that.data.imageurl == "") {
       wx.showToast({
         title: "内容不能为空",
@@ -78,7 +58,7 @@ Page({
       return false;
     }
     let image = that.data.imageurl
-    let address = app.globalData.location.address
+    let address = app.globalData.location.address + app.globalData.location.name
     let userid = app.globalData.userId
     
     wx.request({
@@ -130,12 +110,10 @@ Page({
   chooseImg(e) {
     var that = this;
     wx.chooseImage({
-      count: 1, // 默认9
-      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      count: 1,
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'], 
       success: function(res) {
-        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-        console.log(res);
         that.setData({
           tempFile: res.tempFilePaths[0],
         })

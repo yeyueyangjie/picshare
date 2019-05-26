@@ -1,5 +1,3 @@
-//index.js
-//获取应用实例
 let start
 const app = getApp()
 Page({
@@ -24,18 +22,11 @@ Page({
   },
   // 获取当前的pic
   loadPic: function(step) {
-    //
-    console.log('第'+step + '条数据导入')
+    console.log('第' + step + '条数据导入')
     let that = this
-    let picshare
-    let pic
-    if(step == 0){
-      pic = app.globalData.picList[0]
-      picshare = pic.picShareId
-    } else{
-      pic = app.globalData.picList[step]
-      picshare = pic.picShareId
-    }
+    let pic = app.globalData.picList[step]
+    let picshare = pic.picShareId
+
     that.setData({
       picShareId: picshare,
       target: pic.target,
@@ -47,43 +38,25 @@ Page({
       authorportrait: pic.authorportrait
     })
 
-    //获取点赞条数
+    //获取当前图片点赞条数
     wx.request({
-      url: app.globalData.serviceurl + '/pic/sharecount',
+      url: app.globalData.serviceurl + '/collection/count',
       data: {
-        picShareId: picshare
+        picShareId: picshare,
+        userId: app.globalData.userId
       },
-      method: 'GET',
+      method: 'POST',
       header: {
         'content-type': 'application/json'
       },
       success(res) {
+        console.log(res)
         if (res.data.code == 200) {
           that.setData({
             collect: res.data.data.count
           })
-        }
-        console.log('点赞数量的数据')
-        console.log(res)
-      }
-    })
-
-    // 获取当前用户的点赞信息
-
-    wx.request({
-      url: app.globalData.serviceurl + '/pic/collectcount',
-      data: {
-        userId: app.globalData.userId,
-        picShareId: picshare
-      },
-      method: 'GET',
-      header: {
-        'content-type': 'application/json'
-      },
-      success(res) {
-        if (res.data.code == 200) {
-
-          if (res.data.data.count == 0) {
+          if (res.data.data.list.length == 0) {
+            //未收藏
             wx.request({
               url: app.globalData.serviceurl + '/collection/add',
               method: 'POST',
@@ -107,25 +80,24 @@ Page({
               }
             })
           } else {
-            that.setData({
-              collectionId: res.data.data.list[0].collectionId
-            })
-            if (res.data.data.list[0].del == 1) {
-              // 收藏
+            //有收藏记录
+            if (res.data.data.list[0].status == 1) {
+              //收藏
               console.log('已经收藏过了')
               that.setData({
-                collectShow: 1
+                collectShow: 1,
+                collectionId: res.data.data.list[0].collectionId
               })
-
             } else {
+              //取消收藏
               console.log('可能取消了收藏')
               that.setData({
-                collectShow: 2
+                collectShow: 2,
+                collectionId: res.data.data.list[0].collectionId
               })
             }
           }
         }
-        console.log(res)
       }
     })
   },
@@ -148,25 +120,21 @@ Page({
         title: '已经到底了',
         duration: 2000,
         icon: 'none'
-      }) 
-      step = list.length-1
-      app.globalData.step = step    
+      })
+      step = list.length - 1
+      app.globalData.step = step
     }
     that.loadPic(step)
   },
   // 收藏
   toCollect(e) {
     let that = this
-    let userId = app.globalData.userId //登陆进来的用户id
-    let picShareId = that.data.picShareId //作品id
-    let del = 3 - that.data.collectShow //收藏状态
+    let status = 3 - that.data.collectShow //收藏状态
     wx.request({
-      url: app.globalData.serviceurl + '/collection/update',
+      url: app.globalData.serviceurl + '/collection/change',
       method: 'POST',
       data: {
-        collected: userId,
-        picShare: picShareId,
-        del: del,
+        status: status,
         collectionId: that.data.collectionId
       },
       header: {
@@ -175,20 +143,20 @@ Page({
       success: function(res) {
         console.log(res)
         if (res.data.code == 200) {
-          //该表收藏状态成功
+          //该表收藏状态改变成功
           wx.showToast({
             title: '操作成功',
-            duration: 2000,
+            duration: 2500,
             icon: 'none'
           })
           that.setData({
-            collectShow: del
+            collectShow: status
           })
-          that.onLoad()
+          that.onShow()
         } else {
           wx.showToast({
             title: '操作失败',
-            duration: 2000,
+            duration: 2500,
             icon: 'none'
           })
         }
@@ -205,19 +173,17 @@ Page({
     this.changeSubject(++app.globalData.step);
   },
 
-  // 下面主要模仿滑动事件
-  touchstart: function (e) {
+  touchstart: function(e) {
     start = e.changedTouches[0];
   },
 
-  touchmove: function (e) {
-  },
+  touchmove: function(e) {},
 
-  touched: function (e) {
+  touched: function(e) {
     this.getDirect(start, e.changedTouches[0]);
   },
 
-  touchcancel: function (e) {
+  touchcancel: function(e) {
     this.getDirect(start, e.changedTouches[0]);
   },
 
@@ -227,49 +193,30 @@ Page({
       Y = end.pageY - start.pageY;
     if (Math.abs(X) > Math.abs(Y) && X > 0) {
       console.log("right");
-    }
-    else if (Math.abs(X) > Math.abs(Y) && X < 0) {
+    } else if (Math.abs(X) > Math.abs(Y) && X < 0) {
       console.log("left");
-    }
-    else if (Math.abs(Y) > Math.abs(X) && Y > 0) {
+    } else if (Math.abs(Y) > Math.abs(X) && Y > 0) {
       console.log("bottom");
       this.pre();
-    }
-    else if (Math.abs(Y) > Math.abs(X) && Y < 0) {
+    } else if (Math.abs(Y) > Math.abs(X) && Y < 0) {
       console.log("top");
       this.next()
     }
   },
   onLoad: function() {
-    console.log(app.globalData)
     // 判断登录状态
+    // 未登录需要进行登录
+    // 登录跳过
     if (app.globalData.userId == "") {
-      console.log('进行登录状态判断')
-      app.onLogin(this.data.step)
+      app.SignIn()
       this.setData({
         userId: app.globalData.userId,
         userInfo: app.globalData.userInfo
       })
-      console.log(this.data)
-    }
-    let test = (obj) => {
-      let flag = Object.keys(obj)
-      return (flag.length === 0)
-    }
-
-    if (test(app.globalData.location)) {
-      console.log('进行当前位置获取')
-      // 获取当前位置信息
-      wx.chooseLocation({
-        success: function(res) {
-          app.globalData.location = res
-        }
-      })
     }
   },
-  onShow: function(){
+  onShow: function() {
     app.loadPicList()
-    console.log('从新导入数据')
     this.loadPic(app.globalData.step)
   }
 })

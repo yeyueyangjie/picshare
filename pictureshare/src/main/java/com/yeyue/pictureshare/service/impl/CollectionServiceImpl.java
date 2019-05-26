@@ -7,13 +7,20 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+
 @Service(value = "collectionServiceImpl")
 public class CollectionServiceImpl implements CollectionService {
     @Resource
     private CollectionDao cetdao;
+
     @Override
-    public CollectionEntity getCollection(String collectionId) {
-        return cetdao.getCollection(collectionId);
+    public List<CollectionEntity> getCollection(String picShareId, String userId) {
+        return cetdao.getCollection(picShareId, userId);
+    }
+
+    @Override
+    public Integer getCollectedNum(String picShareId) {
+        return cetdao.getCollectedNum(picShareId);
     }
 
     @Override
@@ -22,9 +29,7 @@ public class CollectionServiceImpl implements CollectionService {
     }
 
     @Override
-    public Integer updateCollection(CollectionEntity collection) {
-        return cetdao.updateCollection(collection);
+    public Integer changeCollection(Integer status, String collectionId) {
+        return cetdao.changeCollection(status, collectionId);
     }
-
-
 }

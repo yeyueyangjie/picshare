@@ -8,30 +8,21 @@
         <where>
             del = 1 and status = 1 and author = #{userId}
         </where>
+        <![CDATA[ order by created desc ]]>
     </select>
     <select id="getPicShareList" resultMap="picShareMap">
         <![CDATA[select p.*,u.portrait as authorportrait from picshareinfo p left join userinfo u on p.author = u.userId]]>
         <where>
             p.del = 1 and p.status = 1 and u.del = 1 and u.status = 1
         </where>
+        <![CDATA[ order by created desc ]]>
     </select>
-    <select id="getCollectCount" resultType="Integer">
-        <![CDATA[select count(*) from picshareinfo p inner join collectioninfo c on c.picShare = p.picShareId]]>
+    <select id="getPicShareListByCollected" resultMap="picShareMap">
+        <![CDATA[select p.*,c.created as collection from picshareinfo p inner join collectioninfo c on c.picShare = p.picShareId]]>
         <where>
-            p.del = 1 and p.status = 1 and p.picShareId = #{picShareId} and c.del = 1
+            p.del = 1 and p.status = 1 and c.collected = #{userId} and c.status = 1
         </where>
-    </select>
-    <select id="getCollectedCount" resultMap="collectionMap">
-        <![CDATA[select c.* from picshareinfo p inner join collectioninfo c on c.picShare = p.picShareId]]>
-        <where>
-            p.del = 1 and p.status = 1 and c.collected = #{userId} and p.picShareId =#{picShareId}
-        </where>
-    </select>
-    <select id="getCollectedList" resultMap="picShareMap">
-        <![CDATA[select p.* from picshareinfo p inner join collectioninfo c on c.picShare = p.picShareId]]>
-        <where>
-            p.del = 1 and p.status = 1 and c.collected = #{userId} and c.del = 1
-        </where>
+        <![CDATA[ order by c.created desc ]]>
     </select>
     <select id="getPicShare" resultMap="picShareMap">
         <![CDATA[select * from picshareinfo]]>

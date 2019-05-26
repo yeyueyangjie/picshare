@@ -1,18 +1,18 @@
 package com.yeyue.pictureshare.dto;
 
 /**
- *  搜索条件  数据流
+ * 搜索条件  数据流
  */
 public class SearchDto {
     private String userId;
     private String picShareId;
     private String collectionId;
     private String search;
-    private double locationx;
-    private double locationy;
+    private String address;
     private Integer created;
     private Integer limit;
     private Integer start;
+    private Integer status;
 
     public String getUserId() {
         return userId;
@@ -46,22 +46,6 @@ public class SearchDto {
         this.search = search;
     }
 
-    public double getLocationx() {
-        return locationx;
-    }
-
-    public void setLocationx(double locationx) {
-        this.locationx = locationx;
-    }
-
-    public double getLocationy() {
-        return locationy;
-    }
-
-    public void setLocationy(double locationy) {
-        this.locationy = locationy;
-    }
-
     public Integer getCreated() {
         return created;
     }
@@ -84,5 +68,21 @@ public class SearchDto {
 
     public void setStart(Integer start) {
         this.start = start;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

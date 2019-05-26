@@ -41,6 +41,18 @@ public class PicShareEntity {
      * 作者头像
      */
     private String authorportrait;
+    /**
+     * 和当前位置距离
+     */
+    private long distance;
+
+    public long getDistance() {
+        return distance;
+    }
+
+    public void setDistance(long distance) {
+        this.distance = distance;
+    }
 
     public String getAuthorportrait() {
         return authorportrait;
@@ -54,6 +66,16 @@ public class PicShareEntity {
      * 收藏是否 是为1
      */
     private Integer collect;
+
+    private String collection;
+
+    public String getCollection() {
+        return collection;
+    }
+
+    public void setCollection(String collection) {
+        this.collection = collection;
+    }
 
     public Integer getCollect() {
         return collect;
@@ -134,4 +156,6 @@ public class PicShareEntity {
     public void setDel(String del) {
         this.del = del;
     }
+
+
 }

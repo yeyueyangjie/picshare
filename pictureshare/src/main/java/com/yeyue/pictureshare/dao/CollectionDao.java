@@ -8,7 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface CollectionDao {
-    public CollectionEntity getCollection(@Param("collectionId") String collectionId);
+    public List<CollectionEntity> getCollection(@Param("picShareId") String picShareId,@Param("userId") String userId);
+    public Integer getCollectedNum(@Param("picShareId") String picShareId);
     public Integer addCollection(@Param("collection") CollectionEntity collection);
-    public Integer updateCollection(@Param("collection") CollectionEntity collection);
+    public Integer changeCollection(@Param("status") Integer status,@Param("collectionId") String collectionId);
 }

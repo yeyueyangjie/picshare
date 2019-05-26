@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.yeyue</groupId>
     <artifactId>pictureshare</artifactId>
-    <version>1.0.11</version>
+    <version>1.1.1</version>
     <name>pictureshare</name>
     <description>Final Test For University !</description>
     <packaging>jar</packaging>

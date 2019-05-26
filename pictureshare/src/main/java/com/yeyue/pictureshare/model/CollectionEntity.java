@@ -18,9 +18,9 @@ public class CollectionEntity {
      */
     private String created;
     /**
-     * 删除喜欢  1为喜欢 2为不喜欢
+     * 是否收藏  1为未收藏 2为收藏
      */
-    private String del;
+    private String status;
 
     public String getCollectionId() {
         return collectionId;
@@ -54,11 +54,11 @@ public class CollectionEntity {
         this.created = created;
     }
 
-    public String getDel() {
-        return del;
+    public String getStatus() {
+        return status;
     }
 
-    public void setDel(String del) {
-        this.del = del;
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

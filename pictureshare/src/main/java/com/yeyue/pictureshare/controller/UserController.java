@@ -22,23 +22,25 @@ public class UserController {
     private UserService userService;
     @Autowired
     private WXConfiguration wxconfig;
+
     /**
-     *  小程序登录回调
+     * 小程序登录回调
+     *
      * @param code
      * @return
      */
     @CrossOrigin
     @GetMapping("/user/wxlogin")
-    public ResultDto WXLogin(String code){
+    public ResultDto WXLogin(String code) {
         ResultDto result = new ResultDto();
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new WxMappingJackson2HttpMessageConverter());
         //请求的路径
-        String url = wxconfig.getUrl()+"?appid="+wxconfig.getAppid()+"&secret="+wxconfig.getAppsecret()+"&js_code="+code+"&grant_type="+wxconfig.getGranttype();
+        String url = wxconfig.getUrl() + "?appid=" + wxconfig.getAppid() + "&secret=" + wxconfig.getAppsecret() + "&js_code=" + code + "&grant_type=" + wxconfig.getGranttype();
         try {
-            WXLoginDto login = restTemplate.getForObject(url,WXLoginDto.class);
+            WXLoginDto login = restTemplate.getForObject(url, WXLoginDto.class);
             System.out.println(login.toString());
-            if(!("").equals(login) && login.getErrcode() == 0){
+            if (!("").equals(login) && login.getErrcode() == 0) {
                 result.setCode(200);
                 PageDto page = new PageDto();
                 List<WXLoginDto> wxlogin = new ArrayList<>();
@@ -46,28 +48,29 @@ public class UserController {
                 page.setList(wxlogin);
                 page.setCount(1);
                 result.setData(page);
-            }
-            else {
+            } else {
                 result.setCode(login.getErrcode());
                 result.setMessage(login.getErrmsg());
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             result.setCode(300);
             System.out.println(e.toString());
             result.setMessage(e.toString());
-        }finally {
+        } finally {
             return result;
         }
 
 
     }
+
     /**
      * 获取用户列表
+     *
      * @return
      */
     @CrossOrigin
     @GetMapping("/user/list")
-    public ResultDto getUserList(){
+    public ResultDto getUserList() {
         ResultDto result = new ResultDto();
         try {
             PageDto page = new PageDto();
@@ -76,52 +79,54 @@ public class UserController {
             page.setList(list);
             result.setCode(200);
             result.setData(page);
-        }catch (Exception e){
+        } catch (Exception e) {
             result.setCode(300);
             result.setMessage(e.toString());
-        }finally {
+        } finally {
             return result;
         }
     }
 
     /**
      * 获取用户详情
+     *
      * @param userId
      * @return
      */
     @CrossOrigin
     @GetMapping("/user/detail")
-    public ResultDto getUser(String userId){
-        ResultDto result =  new ResultDto();
+    public ResultDto getUser(String userId) {
+        ResultDto result = new ResultDto();
         try {
             PageDto page = new PageDto();
-            if(("").equals(userId)){
-              result.setCode(301);
-              result.setMessage("UserId is Empty");
-            }else{
+            if (("").equals(userId)) {
+                result.setCode(301);
+                result.setMessage("UserId is Empty");
+            } else {
                 UserEntity user = userService.getUser(userId);
-                if(user != null){
+                if (user != null) {
                     List<UserEntity> userlist = new ArrayList<>();
                     userlist.add(user);
                     page.setList(userlist);
                     page.setCount(1);
                     result.setCode(200);
                     result.setData(page);
-                }else {
+                } else {
                     result.setCode(302);
                     result.setMessage("User is Empty");
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             result.setCode(300);
             result.setMessage(e.toString());
-        }finally {
-            return  result;
+        } finally {
+            return result;
         }
     }
+
     @CrossOrigin
     @PostMapping("/user/add")
-    public ResultDto addUser(@RequestBody UserEntity user){
+    public ResultDto addUser(@RequestBody UserEntity user) {
         ResultDto result = new ResultDto();
         try {
             PageDto page = new PageDto();
@@ -133,62 +138,64 @@ public class UserController {
             page.setList(userlist);
             result.setCode(200);
             result.setData(page);
-        }catch (Exception e){
+        } catch (Exception e) {
             result.setCode(300);
             result.setMessage(e.toString());
-        }finally {
+        } finally {
             return result;
         }
     }
 
     /**
      * 更新用户
+     *
      * @param user
      * @return
      */
     @CrossOrigin
     @PostMapping("/user/update")
-    public ResultDto updateUser(@RequestBody UserEntity user){
+    public ResultDto updateUser(@RequestBody UserEntity user) {
         ResultDto result = new ResultDto();
-        try{
+        try {
             PageDto page = new PageDto();
 
             page.setCount(userService.updateUser(user));
 
             result.setCode(200);
             result.setData(page);
-        }catch (Exception e){
+        } catch (Exception e) {
             result.setCode(300);
             result.setMessage(e.toString());
-        }finally {
+        } finally {
             return result;
         }
     }
 
     /**
      * 删除用户
+     *
      * @param userId
      * @return
      */
     @CrossOrigin
     @GetMapping("/user/delete")
-    public ResultDto deleteUser(String userId){
+    public ResultDto deleteUser(String userId) {
         ResultDto result = new ResultDto();
         try {
-            if(("").equals(userId)){
+            if (("").equals(userId)) {
                 result.setCode(301);
                 result.setMessage("UserId is Empty");
-            }else {
+            } else {
                 PageDto page = new PageDto();
                 page.setCount(userService.deleteUser(userId));
 
                 result.setCode(200);
                 result.setData(page);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             result.setCode(300);
             result.setMessage(e.toString());
-        }finally {
+        } finally {
             return result;
         }
 

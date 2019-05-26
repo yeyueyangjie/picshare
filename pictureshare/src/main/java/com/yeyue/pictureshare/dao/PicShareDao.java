@@ -15,8 +15,6 @@ public interface PicShareDao {
     public Integer addPicShare(@Param("pic") PicShareEntity pic);
     public Integer updatePicShare(@Param("pic") PicShareEntity pic);
     public Integer deletePicShare(@Param("picShareId") String picShareId);
-    public List<CollectionEntity> getCollectedCount(@Param("userId") String userId,@Param("picShareId") String picShareId);
-    public List<CollectionEntity> getCollectedList(@Param("userId") String userId);
-    public Integer getCollectCount(@Param("picShareId") String picShareId);
     public List<PicShareEntity> getPicShareListByAuthor(@Param("userId") String userId);
+    public List<PicShareEntity> getPicShareListByCollected(@Param("userId") String userId);
 }

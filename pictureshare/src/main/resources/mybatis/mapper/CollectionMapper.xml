@@ -5,16 +5,22 @@
     <select id="getCollection" resultMap="collectionMap">
         <![CDATA[select * from collectioninfo]]>
         <where>
-            collectionId = #{collectionId}
+            picShare = #{picShareId} and collected = #{userId}
+        </where>
+    </select>
+    <select id="getCollectedNum" resultType="Integer">
+        <![CDATA[select count(*) from collectioninfo]]>
+        <where>
+            picShare = #{picShareId} and status = 1
         </where>
     </select>
     <insert id="addCollection">
-        insert into collectioninfo(collectionId,picShare,collected,created,del) values (#{collection.collectionId},#{collection.picShare},#{collection.collected},now(),2)
+        insert into collectioninfo(collectionId,picShare,collected,created,status) values (#{collection.collectionId},#{collection.picShare},#{collection.collected},now(),2)
     </insert>
-    <update id="updateCollection">
-        update collectioninfo set del = #{collection.del}
+    <update id="changeCollection">
+        update collectioninfo set status = #{status},created = now()
         <where>
-            collectionId = #{collection.collectionId}
+            collectionId = #{collectionId}
         </where>
     </update>
 </mapper>

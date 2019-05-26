@@ -5,7 +5,8 @@ import com.yeyue.pictureshare.model.CollectionEntity;
 import java.util.List;
 
 public interface CollectionService {
-    public CollectionEntity getCollection(String collectionId);
+    public List<CollectionEntity> getCollection(String picShareId,String userId);
+    public Integer getCollectedNum(String picShareId);
     public Integer addCollection(CollectionEntity collection);
-    public Integer updateCollection(CollectionEntity collection);
+    public Integer changeCollection(Integer status,String collectionId);
 }
